@@ -18,48 +18,49 @@ class m191111_090949_init extends Migration
         }
 
         $this->createTable('{{%user}}', [
-            'id' => $this->primaryKey(),
-            'username' => $this->string()->notNull()->unique(),
-            'email' => $this->string()->null(),
-            'status' => $this->smallInteger()->notNull()->defaultValue(10),
+            'id'         => $this->primaryKey(),
+            'username'   => $this->string()->notNull()->unique(),
+            'email'      => $this->string()->null(),
+            'status'     => $this->smallInteger()->notNull()->defaultValue(10),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
 
 
         $this->createTable('{{%customer}}', [
-            'id' => $this->primaryKey(),
-            'name' => $this->string()->notNull()->unique(),
+            'id'     => $this->primaryKey(),
+            'name'   => $this->string()->notNull()->unique(),
             'status' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
 
 
         $this->createTable('{{%history}}', [
-            'id' => $this->primaryKey(),
-            'ins_ts' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'id'          => $this->primaryKey(),
+            'ins_ts'      => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
             'customer_id' => $this->integer(),
-            'user_id' => $this->integer(),
-            'event' => $this->string()->notNull(),
-            'object' => $this->string(),
-            'object_id' => $this->integer(),
-            'message' => $this->text()->null(),
-            'detail' => $this->text(),
+            'user_id'     => $this->integer(),
+            'event'       => $this->string()->notNull(),
+            'object'      => $this->string(),
+            'object_id'   => $this->integer(),
+            'message'     => $this->text()->null(),
+            'detail'      => $this->text(),
         ], $tableOptions);
 
         $this->addForeignKey('fk_history__customer_id', 'history', 'customer_id', 'customer', 'id', 'RESTRICT', 'CASCADE');
         $this->addForeignKey('fk_history__user_id', 'history', 'user_id', 'user', 'id', 'RESTRICT', 'CASCADE');
+        $this->createIndex('history_object_id_index', '{{%history}}', 'object_id');
 
 
         $this->createTable('{{%call}}', [
-            'id' => $this->primaryKey(),
-            'ins_ts' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
-            'direction' => $this->smallInteger()->notNull(),
-            'user_id' => $this->integer()->null(),
+            'id'          => $this->primaryKey(),
+            'ins_ts'      => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'direction'   => $this->smallInteger()->notNull(),
+            'user_id'     => $this->integer()->null(),
             'customer_id' => $this->integer()->notNull(),
-            'status' => $this->smallInteger()->notNull()->defaultValue(0),
-            'phone_from' => $this->string()->null(),
-            'phone_to' => $this->string()->null(),
-            'comment' => $this->text(),
+            'status'      => $this->smallInteger()->notNull()->defaultValue(0),
+            'phone_from'  => $this->string()->null(),
+            'phone_to'    => $this->string()->null(),
+            'comment'     => $this->text(),
         ], $tableOptions);
 
         $this->addForeignKey('fk_call__user_id', 'call', 'user_id', 'user', 'id', 'RESTRICT', 'CASCADE');
@@ -67,27 +68,27 @@ class m191111_090949_init extends Migration
 
 
         $this->createTable('{{%fax}}', [
-            'id' => $this->primaryKey(),
-            'ins_ts' => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
-            'user_id' => $this->integer(),
-            'from' => $this->string(),
-            'to' => $this->string(),
+            'id'        => $this->primaryKey(),
+            'ins_ts'    => $this->timestamp()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'user_id'   => $this->integer(),
+            'from'      => $this->string(),
+            'to'        => $this->string(),
             'direction' => $this->smallInteger()->notNull()->defaultValue(0),
-            'type' => $this->string(),
+            'type'      => $this->string(),
         ], $tableOptions);
 
         $this->addForeignKey('fk_fax__user_id', 'fax', 'user_id', 'user', 'id', 'RESTRICT', 'CASCADE');
 
 
         $this->createTable('{{%sms}}', [
-            'id' => $this->primaryKey(),
-            'user_id' => $this->integer()->null(),
+            'id'          => $this->primaryKey(),
+            'user_id'     => $this->integer()->null(),
             'customer_id' => $this->integer()->notNull(),
-            'status' => $this->smallInteger()->notNull()->defaultValue(0),
-            'phone_from' => $this->string()->null(),
-            'phone_to' => $this->string()->null(),
-            'message' => $this->text(),
-            'direction' => $this->tinyInteger(),
+            'status'      => $this->smallInteger()->notNull()->defaultValue(0),
+            'phone_from'  => $this->string()->null(),
+            'phone_to'    => $this->string()->null(),
+            'message'     => $this->text(),
+            'direction'   => $this->tinyInteger(),
         ], $tableOptions);
 
         $this->addForeignKey('fk_sms__user_id', 'sms', 'user_id', 'user', 'id', 'RESTRICT', 'CASCADE');
@@ -95,14 +96,14 @@ class m191111_090949_init extends Migration
 
 
         $this->createTable('{{%task}}', [
-            'id' => $this->primaryKey(),
-            'user_id' => $this->integer()->notNull(),
+            'id'          => $this->primaryKey(),
+            'user_id'     => $this->integer()->notNull(),
             'customer_id' => $this->integer()->notNull(),
-            'status' => $this->smallInteger()->notNull()->defaultValue(0),
-            'title' => $this->string()->notNull(),
-            'text' => $this->text(),
-            'due_date' => $this->dateTime(),
-            'priority' => $this->smallInteger(),
+            'status'      => $this->smallInteger()->notNull()->defaultValue(0),
+            'title'       => $this->string()->notNull(),
+            'text'        => $this->text(),
+            'due_date'    => $this->dateTime(),
+            'priority'    => $this->smallInteger(),
         ], $tableOptions);
 
         $this->addForeignKey('fk_task__user_id', 'task', 'user_id', 'user', 'id', 'RESTRICT', 'CASCADE');
